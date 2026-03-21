@@ -1,0 +1,11 @@
+# Environment variables
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.db
+
+# Frontend
+node_modules/
+.next/
