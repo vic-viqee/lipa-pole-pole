@@ -1,15 +1,34 @@
-# Agent Files
-AGENT.md
-GEMINI.md
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Environment variables
-backend/.env
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Python
 __pycache__/
 *.py[cod]
-*.db
-
-# Frontend
-node_modules/
-.next/
+*.env
+backend/.env
+database.db
+database.db-shm
+database.db-wal
+backend/test.db

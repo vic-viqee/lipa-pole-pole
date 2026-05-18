@@ -1,0 +1,70 @@
+.progress {
+  width: 100%;
+}
+
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.progress-value {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.progress-track {
+  width: 100%;
+  background: var(--surface-overlay);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+/* Sizes */
+.progress-sm .progress-track {
+  height: 4px;
+}
+
+.progress-md .progress-track {
+  height: 8px;
+}
+
+.progress-lg .progress-track {
+  height: 12px;
+}
+
+/* Variants */
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--duration-slow) var(--ease-out-quart);
+}
+
+.progress-default .progress-fill {
+  background: var(--color-primary);
+}
+
+.progress-success .progress-fill {
+  background: oklch(55% 0.12 145);
+}
+
+.progress-warning .progress-fill {
+  background: oklch(60% 0.12 85);
+}
+
+.progress-error .progress-fill {
+  background: oklch(55% 0.15 25);
+}
+
+/* Gradient variant */
+.progress-gradient .progress-fill {
+  background: linear-gradient(90deg, var(--color-primary-hover), var(--color-primary));
+}

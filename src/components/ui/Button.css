@@ -1,0 +1,115 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out-quart);
+  position: relative;
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.btn-sm {
+  height: 32px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.btn-md {
+  height: 40px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.btn-lg {
+  height: 48px;
+  padding: 0 var(--space-6);
+  font-size: var(--text-base);
+}
+
+/* Variants */
+.btn-primary {
+  background: var(--color-primary);
+  color: oklch(15% 0 0);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-overlay);
+  border-color: var(--border-strong);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+.btn-danger {
+  background: var(--color-error);
+  color: oklch(98% 0 0);
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-border);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--color-primary-subtle);
+}
+
+/* Full width */
+.btn-full {
+  width: 100%;
+}
+
+/* Loading state */
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+}
+
+.btn-text-loading {
+  opacity: 0.7;
+}

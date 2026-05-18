@@ -1,0 +1,83 @@
+.card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--duration-normal) var(--ease-out-quart);
+}
+
+/* Variants */
+.card-default {
+  /* Base styles above */
+}
+
+.card-glow {
+  border-color: var(--color-primary-border);
+  box-shadow: var(--shadow-glow);
+}
+
+.card-flat {
+  background: var(--surface-overlay);
+  border-color: transparent;
+}
+
+.card-muted {
+  background: var(--surface-base);
+}
+
+/* Padding */
+.card-padding-none {
+  padding: 0;
+}
+
+.card-padding-sm {
+  padding: var(--space-4);
+}
+
+.card-padding-md {
+  padding: var(--space-6);
+}
+
+.card-padding-lg {
+  padding: var(--space-8);
+}
+
+/* Sub-components */
+.card-header {
+  margin-bottom: var(--space-4);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.card-description {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--space-1);
+}
+
+.card-content {
+  /* Base */
+}
+
+.card-footer {
+  margin-top: var(--space-6);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .card-padding-md {
+    padding: var(--space-4);
+  }
+  
+  .card-padding-lg {
+    padding: var(--space-6);
+  }
+}
