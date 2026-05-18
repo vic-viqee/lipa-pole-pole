@@ -156,31 +156,20 @@ if (loading) return (
 )
 
 if (notFound) return (
-...
-return (
   <div className="bv-page">
-    {showConfetti && (
-      <div className="confetti-container">
-        {[...Array(20)].map((_, i) => (
-          <div key={i} className={`confetti piece-${i % 5}`} style={{ left: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 3}s` }} />
-        ))}
-      </div>
-    )}
     <div className="bv-header">
-
-          <div className="bv-logo"><LogoIcon /></div>
-          <span className="bv-brand-name">Lipa Polepole</span>
-        </div>
-      </div>
-      <div className="bv-content">
-        <div className="bv-not-found">
-          <div className="bv-not-found-icon">?</div>
-          <h2>Plan Not Found</h2>
-          <p>This tracking link is invalid. Please check with your vendor.</p>
-        </div>
+      <div className="bv-logo"><LogoIcon /></div>
+      <span className="bv-brand-name">Lipa Polepole</span>
+    </div>
+    <div className="bv-content">
+      <div className="bv-not-found">
+        <div className="bv-not-found-icon">?</div>
+        <h2>Plan Not Found</h2>
+        <p>This tracking link is invalid. Please check with your vendor.</p>
       </div>
     </div>
-  )
+  </div>
+)
 
   const paid = plan.deposit_paid + plan.amount_paid
   const pct = Math.min(Math.round((paid / plan.total_price) * 100), 100)
