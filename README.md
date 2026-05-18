@@ -203,8 +203,7 @@ The frontend uses a custom design system for consistency:
 - SQLite: Delete `test.db` and restart
 - PostgreSQL: Verify user permissions
 
----
-
 ## License
 
 MIT License — free to use and modify.
+
