@@ -5,7 +5,7 @@ from app.db.session import get_db
 from app.models.plan import InstallmentPlan, PlanStatus
 from app.models.customer import Customer
 from app.models.vendor import Vendor
-from app.schemas.plan import PlanCreate, PlanResponse
+from app.schemas.plan import PlanCreate, PlanResponse, PublicPlanResponse
 from app.api.deps import get_current_vendor
 
 router = APIRouter(prefix="/plans", tags=["Plans"])
@@ -71,7 +71,7 @@ def get_plan(
         raise HTTPException(status_code=404, detail="Plan not found")
     return plan
 
-@router.get("/track/{tracking_token}", response_model=PlanResponse)
+@router.get("/track/{tracking_token}", response_model=PublicPlanResponse)
 def track_plan_public(tracking_token: str, db: Session = Depends(get_db)):
     """Public endpoint — customers use this to check their balance"""
     plan = db.query(InstallmentPlan).filter(
@@ -79,4 +79,23 @@ def track_plan_public(tracking_token: str, db: Session = Depends(get_db)):
     ).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
-    return plan
+
+    vendor = plan.customer.vendor
+    customer = plan.customer
+
+    result = PublicPlanResponse(
+        id=plan.id,
+        product_name=plan.product_name,
+        total_price=float(plan.total_price),
+        deposit_paid=float(plan.deposit_paid),
+        amount_paid=float(plan.amount_paid),
+        balance=float(plan.balance),
+        tracking_token=plan.tracking_token,
+        status=plan.status,
+        customer_id=plan.customer_id,
+        vendor_id=plan.vendor_id,
+        created_at=plan.created_at,
+        vendor_name=vendor.shop_name,
+        customer_name=customer.full_name,
+    )
+    return result

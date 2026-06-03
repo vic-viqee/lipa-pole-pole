@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.bootstrap import ensure_database_schema
 from app.models import vendor, customer, plan, payment, mpesa_request
-from app.api.v1 import auth, customers, plans, payments
+from app.api.v1 import auth, customers, plans, payments, og
 
 ensure_database_schema()
 
@@ -20,6 +20,7 @@ app.include_router(auth.router, prefix="/api/v1")
 app.include_router(customers.router, prefix="/api/v1")
 app.include_router(plans.router, prefix="/api/v1")
 app.include_router(payments.router, prefix="/api/v1")
+app.include_router(og.router)
 
 @app.get("/")
 def root():

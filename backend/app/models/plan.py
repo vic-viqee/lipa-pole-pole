@@ -26,7 +26,7 @@ class InstallmentPlan(Base):
         unique=True,
         index=True,
         nullable=False,
-        default=lambda: secrets.token_urlsafe(16),
+        default=lambda: secrets.token_urlsafe(8),
     )
     status = Column(Enum(PlanStatus), default=PlanStatus.active)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
