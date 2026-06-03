@@ -84,14 +84,36 @@ Lipa Polepole is an installment tracking system for small businesses:
 5. Safaricom callback hits `/api/v1/payments/mpesa/callback`.
 6. Backend reconciles by `CheckoutRequestID`, records `Payment`, updates plan status/balance.
 
-## 8) Known Risks / Follow-Ups
+## 8) Recent Improvements — Tracking Page Makeover
+
+1. **Vendor & Customer Names on Public Page**:
+   - Backend `PublicPlanResponse` schema adds `vendor_name` + `customer_name` fields.
+   - `GET /plans/track/{token}` now joins Vendor/Customer tables to return names.
+   - Customer sees a personalized greeting (`"Hi {firstName}"`) with vendor's shop name in header.
+
+2. **Shortened Tracking Tokens**:
+   - Model default changed from `token_urlsafe(16)` → `token_urlsafe(8)` (~11 chars instead of 22).
+   - Applies to new plans only; existing plans retain their longer tokens.
+
+3. **Social Sharing (OG Meta Tags)**:
+   - New backend endpoint `GET /og/track/{tracking_token}` serves an HTML page with Open Graph tags (title, description, URL) for WhatsApp/Facebook/Twitter crawlers.
+   - The page instantly redirects to the SPA tracking page.
+   - PlanDetails vendor panel now has a **"Share via WhatsApp"** button using the OG URL.
+
+4. **Polished Public Tracking Page**:
+   - Uses `react-helmet-async` for dynamic `<title>` and OG meta tags in the browser.
+   - revamped payment form with phone icon, KSh prefix, inline validation, and cleaner messages.
+   - Receipt-style timeline for payment history with timestamps and running totals.
+   - Better loading skeletons, error states, and responsive design improvements.
+
+## 10) Known Risks / Follow-Ups
 
 - No formal migration system usage in this flow yet (bootstrap helps but Alembic migrations are still recommended).
 - Callback security verification/signature validation can be improved.
 - API and UI automated tests are minimal and should be expanded.
 - Styling is mostly component-local CSS blocks; can be refactored for maintainability.
 
-## 9) How to Work Safely as an Agent
+## 11) How to Work Safely as an Agent
 
 - Before changing payment/auth logic, read:
   - `backend/app/api/v1/payments.py`
