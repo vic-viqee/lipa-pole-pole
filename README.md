@@ -2,6 +2,14 @@
 
 Installment payment tracking for Kenyan small businesses with M-Pesa integration.
 
+## Live Demo
+
+- **Tracking Page**: [https://lipa-polepole-api.victorlewismurimi.workers.dev/track/ClaWVn4kucE](https://lipa-polepole-api.victorlewismurimi.workers.dev/track/ClaWVn4kucE)
+
+## About
+
+Lipa Pole Pole ("pay slowly" in Swahili) helps small businesses manage installment payments. Vendors create payment plans for customers, who get a shareable tracking link to view their balance, payment history, and pay via M-Pesa STK Push — no login required. The tracking page includes WhatsApp-friendly OG meta tags for rich previews when shared.
+
 ## Architecture
 
 ```
