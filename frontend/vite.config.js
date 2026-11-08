@@ -7,4 +7,12 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://lipa-polepole-api.victorlewismurimi.workers.dev',
+        changeOrigin: true,
+      },
+    },
+  },
 })

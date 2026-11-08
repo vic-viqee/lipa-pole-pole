@@ -8,6 +8,12 @@ export default function Layout({ children }) {
       <main className="layout-main">
         {children}
       </main>
+      <footer className="layout-footer">
+        Designed &amp; Developed by{' '}
+        <a href="https://viqsystems.tech" target="_blank" rel="noopener noreferrer">
+          Viq Systems
+        </a>
+      </footer>
     </div>
   )
 }

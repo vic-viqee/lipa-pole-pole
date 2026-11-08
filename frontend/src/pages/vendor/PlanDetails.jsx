@@ -204,8 +204,7 @@ export default function PlanDetails() {
               fullWidth
               onClick={() => {
                 const url = `${window.location.origin}/track/${plan.tracking_token}`
-                const ogUrl = `${window.location.origin}/og/track/${plan.tracking_token}`
-                const msg = encodeURIComponent(`Hi! Track your installment plan for ${plan.product_name} and pay via M-Pesa here: ${ogUrl}`)
+                const msg = encodeURIComponent(`Hi! Track your installment plan for ${plan.product_name} and pay via M-Pesa here: ${url}`)
                 window.open(`https://wa.me/?text=${msg}`, '_blank')
               }}
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}

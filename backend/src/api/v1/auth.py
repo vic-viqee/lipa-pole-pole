@@ -1,59 +1,74 @@
-from fastapi import APIRouter, Depends, HTTPException
+from core.config import get_settings
+from core.deps import get_d1
+from core.router import HTTPException, Router, json_response, parse_json_body
+from core.security import create_access_token, hash_password, verify_password
+from core.validate import validate_email, validate_kenyan_phone, validate_required_string
+from db.d1 import D1
 
-from src.core.deps import get_d1
-from src.core.security import create_access_token, hash_password, verify_password
-from src.core.config import get_settings
-from src.db.d1 import D1
-from src.schemas.vendor import VendorCreate, VendorLogin, VendorResponse
-
-router = APIRouter(prefix="/auth", tags=["Auth"])
+router = Router(prefix="/api/v1/auth")
 
 
-@router.post("/register", response_model=VendorResponse)
-def register(vendor_data: VendorCreate, d1: D1 = Depends(get_d1)):
-    existing = d1.query_one(
-        "SELECT id FROM vendors WHERE email = ?", vendor_data.email
-    )
+@router.post("/register")
+async def register(request, env, params):
+    data = await parse_json_body(request)
+    email = validate_required_string(data, "email")
+    if not validate_email(email):
+        raise HTTPException(400, "Invalid email")
+    password = validate_required_string(data, "password")
+    shop_name = validate_required_string(data, "shop_name")
+    try:
+        phone = validate_kenyan_phone(data.get("phone", ""))
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+    d1: D1 = get_d1(env)
+
+    existing = await d1.query_one("SELECT id FROM vendors WHERE email = ?", email)
     if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(400, "Email already registered")
 
-    existing_phone = d1.query_one(
-        "SELECT id FROM vendors WHERE phone = ?", vendor_data.phone
-    )
+    existing_phone = await d1.query_one("SELECT id FROM vendors WHERE phone = ?", phone)
     if existing_phone:
-        raise HTTPException(status_code=400, detail="Phone already registered")
+        raise HTTPException(400, "Phone already registered")
 
-    hashed = hash_password(vendor_data.password)
-    d1.execute(
+    hashed = hash_password(password)
+    await d1.execute(
         "INSERT INTO vendors (shop_name, email, phone, hashed_password) VALUES (?, ?, ?, ?)",
-        vendor_data.shop_name,
-        vendor_data.email,
-        vendor_data.phone,
-        hashed,
+        shop_name, email, phone, hashed,
     )
 
-    vendor = d1.query_one(
+    vendor = await d1.query_one(
         "SELECT id, shop_name, email, phone, created_at FROM vendors WHERE email = ?",
-        vendor_data.email,
+        email,
     )
     if not vendor:
-        raise HTTPException(status_code=500, detail="Failed to create vendor")
-    return vendor
+        raise HTTPException(500, "Failed to create vendor")
+    return json_response(vendor, status=201)
 
 
 @router.post("/login")
-def login(credentials: VendorLogin, d1: D1 = Depends(get_d1)):
-    vendor = d1.query_one(
-        "SELECT id, shop_name, email, phone, hashed_password FROM vendors WHERE email = ?",
-        credentials.email,
-    )
-    if not vendor or not verify_password(credentials.password, vendor["hashed_password"]):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+async def login(request, env, params):
+    data = await parse_json_body(request)
+    email = validate_required_string(data, "email")
+    password = validate_required_string(data, "password")
 
-    settings = get_settings({})
-    token = create_access_token({"sub": str(vendor["id"])}, settings)
-    return {
+    d1: D1 = get_d1(env)
+    vendor = await d1.query_one(
+        "SELECT id, shop_name, email, phone, hashed_password FROM vendors WHERE email = ?",
+        email,
+    )
+    if not vendor or not verify_password(password, vendor["hashed_password"]):
+        raise HTTPException(401, "Invalid email or password")
+
+    # Re-hash if old iteration count is too high
+    parts = vendor["hashed_password"].split("$")
+    if parts[0] == "pbkdf2_sha256" and int(parts[1]) > 10000:
+        new_hash = hash_password(password)
+        await d1.execute("UPDATE vendors SET hashed_password = ? WHERE id = ?", new_hash, vendor["id"])
+
+    token = create_access_token({"sub": str(vendor["id"])})
+    return json_response({
         "access_token": token,
         "token_type": "bearer",
         "vendor": {"id": vendor["id"], "shop_name": vendor["shop_name"]},
-    }
+    })

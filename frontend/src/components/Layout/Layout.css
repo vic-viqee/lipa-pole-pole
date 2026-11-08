@@ -14,3 +14,21 @@
     padding: var(--space-6) var(--space-4);
   }
 }
+
+.layout-footer {
+  text-align: center;
+  padding: var(--space-6);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.layout-footer a {
+  color: var(--color-primary, #2563eb);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.layout-footer a:hover {
+  text-decoration: underline;
+}

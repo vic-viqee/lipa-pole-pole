@@ -51,12 +51,23 @@ CREATE TABLE IF NOT EXISTS payments (
     amount INTEGER NOT NULL,
     mpesa_transaction_id TEXT,
     plan_id INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    phone TEXT,
+    mpesa_receipt_number TEXT,
+    mpesa_result_code TEXT,
+    mpesa_result_desc TEXT,
+    recorded_by_vendor_id INTEGER,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
-    FOREIGN KEY (plan_id) REFERENCES installment_plans(id)
+    FOREIGN KEY (plan_id) REFERENCES installment_plans(id),
+    FOREIGN KEY (recorded_by_vendor_id) REFERENCES vendors(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_payments_plan_id ON payments(plan_id);
 CREATE INDEX IF NOT EXISTS idx_payments_mpesa_txn ON payments(mpesa_transaction_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_mpesa_receipt_unique
+    ON payments(mpesa_receipt_number)
+    WHERE mpesa_receipt_number IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_payments_recorded_by_vendor ON payments(recorded_by_vendor_id);
 
 CREATE TABLE IF NOT EXISTS mpesa_stk_requests (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

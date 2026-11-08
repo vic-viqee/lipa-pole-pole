@@ -8,4 +8,4 @@ export const recordPayment = (data) => api.post('/payments/', data)
 export const getPaymentsForPlan = (planId) => api.get(`/payments/plan/${planId}`)
 export const getPaymentsPublic = (trackingToken) => api.get(`/payments/public/${trackingToken}`)
 export const initiateMpesaPayment = (trackingToken, phone, amount) =>
-  api.post(`/payments/mpesa/stk/${trackingToken}?phone=${phone}&amount=${amount}`)
+  api.post(`/payments/mpesa/stk/${trackingToken}`, { phone, amount })
